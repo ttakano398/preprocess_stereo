@@ -37,32 +37,41 @@
   ```text
   outdir/
   └── {mov}/          # 動画ファイル名と同名のディレクトリ
-      ├── datacfg.json
+      ├── datacfg.json    # 入力設定のコピー
+      ├── dataset.json    # 全フレームのメタデータ（パス, Split, Param）
       ├── seq1/
       │   ├── left/
       │   ├── right/
       │   ├── depth/
-      │   └── occ/
+      │   ├── occ/
+      │   └── inst-seg/
       └── seq2/
           ├── left/
-          └── right/
+          ├── right/
+          └── .../
   ```
-- `datacfg.json`の例
-  - 出力ディレクトリ: {outdir}
-  - 選別する対象のディレクトリ: {mov}
-  - アノテーションのフレーム数のリスト: 例: [[0, 100], [200, 409], ...]
-    - このリストに含まれるフレームを利用
-    - 連続するフレームは同じseqとして利用
-    - このリストのlenを参照し、seq1, seq2, ...とseqを作成される
+- `datacfg.json`の仕様
+  - segments: 抽出フレームとsplitを指定する辞書のリスト
+  - calibration: カメラパラメータ
+  - 全フレーム情報を格納した以下の形式の`dataset.json`が生成される
 ```
 {
   "out_dir": "./dataset_root",
   "target_mov": "surgery_video_01",
   "segments": [
-    [10, 150],
-    [300, 450],
-    [600, 800]
-  ]
+    { "range": [10, 150], "split": "train" },
+    { "range": [300, 450], "split": "val" },
+    { "range": [600, 800], "split": "test" }
+  ],
+  "calibration": {
+    "K1": [[1408.24, 0.0, 988.07], ...],
+    "dist1": [[-0.15, ...]],
+    "K2": [[1416.04, ...], ...],
+    "dist2": [[-0.13, ...]],
+    "R": [[0.99, ...], ...],
+    "T": [[5.22], ...],
+    "baseline": 5.258
+  }
 }
 ```
 
