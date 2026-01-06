@@ -1,3 +1,4 @@
 .venv
 dataset*
 *.mp4
+cfg

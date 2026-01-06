@@ -58,6 +58,8 @@
 {
   "out_dir": "./dataset_root",
   "target_mov": "surgery_video_01",
+  "source_fps": 60,
+  "target_fps": 30,
   "segments": [
     { "range": [10, 150], "split": "train" },
     { "range": [300, 450], "split": "val" },
