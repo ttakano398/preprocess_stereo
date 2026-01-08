@@ -100,7 +100,8 @@ def main():
         # 出力先のシーケンスディレクトリ (dst_root_dir 直下に作成)
         seq_dir = dst_root_dir / seq_name
 
-        # ディレクトリ作成
+        # ディレクトリ作成 (left_pngは削除)
+        # depth, occ, inst-seg は保存先として確保
         for sub in ["left", "right", "depth", "occ", "inst-seg"]:
             (seq_dir / sub).mkdir(parents=True, exist_ok=True)
 
@@ -110,15 +111,22 @@ def main():
 
         for dst_frame_idx in range(start, end + 1):
             src_frame_idx = dst_frame_idx * frame_step
+            
+            # 入力ファイル名
             src_fname = f"{src_frame_idx:05d}.png"
-            dst_fname = f"{dst_frame_idx:05d}.png"
+            
+            # 出力ファイル名 (.png と .npy)
+            dst_fname_png = f"{dst_frame_idx:05d}.png"
+            dst_fname_npy = f"{dst_frame_idx:05d}.npy"
 
             files_processed = False
 
             # 左右画像の処理
             for side in ["left", "right"]:
                 src_path = src_root_dir / side / src_fname
-                dst_path = seq_dir / side / dst_fname
+                
+                # PNGとして保存
+                dst_path_png = seq_dir / side / dst_fname_png
 
                 if src_path.exists():
                     # 画像読み込み
@@ -163,8 +171,9 @@ def main():
                                 img, (tgt_w, tgt_h), interpolation=cv2.INTER_LINEAR
                             )
 
-                    # 保存
-                    cv2.imwrite(str(dst_path), img)
+                    # --- 保存処理 (全てPNG) ---
+                    cv2.imwrite(str(dst_path_png), img)
+
                     files_processed = True
                 else:
                     pass
@@ -178,7 +187,6 @@ def main():
                 )
 
                 # パスを out_dir からの相対パスとして生成
-                # 例: seq1/left/00001.png
                 frame_data = {
                     "frame_index": dst_frame_idx,
                     "original_frame_index": src_frame_idx,
@@ -187,11 +195,12 @@ def main():
                     ),  # 元動画のパスは参考用に絶対パスで記録
                     "split": split_name,
                     "paths": {
-                        "left": f"{seq_name}/left/{dst_fname}",
-                        "right": f"{seq_name}/right/{dst_fname}",
-                        "depth": f"{seq_name}/depth/{dst_fname}",
-                        "occ": f"{seq_name}/occ/{dst_fname}",
-                        "inst-seg": f"{seq_name}/inst-seg/{dst_fname}",
+                        "left": f"{seq_name}/left/{dst_fname_png}",         # .png
+                        "right": f"{seq_name}/right/{dst_fname_png}",       # .png
+                        "depth": f"{seq_name}/depth/{dst_fname_npy}",       # .npy
+                        "depth_view": f"{seq_name}/depth/{dst_fname_png}",  # .png (view)
+                        "occ": f"{seq_name}/occ/{dst_fname_png}",           # .png
+                        "inst-seg": f"{seq_name}/inst-seg/{dst_fname_png}", # .png
                     },
                     "calibration": final_calib,
                 }

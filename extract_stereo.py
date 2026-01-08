@@ -34,7 +34,7 @@ def extract_frames(video_path, out_dir):
         left_img = frame[0::2, :]
         right_img = frame[1::2, :]
 
-        # 保存 (可逆圧縮のPNGを使用)
+        # 保存
         cv2.imwrite(str(out_root / "left" / f"{idx:05d}.png"), left_img)
         cv2.imwrite(str(out_root / "right" / f"{idx:05d}.png"), right_img)
 
