@@ -29,10 +29,10 @@ def extract_frames(video_path, out_dir):
             break
 
         # Line-by-line分割
-        # 奇数行(1,3,5...行目) -> index 0,2,4... -> Left
-        # 偶数行(2,4,6...行目) -> index 1,3,5... -> Right
-        left_img = frame[0::2, :]
-        right_img = frame[1::2, :]
+        # 奇数行(1,3,5...行目) -> index 0,2,4... -> Right
+        # 偶数行(2,4,6...行目) -> index 1,3,5... -> Left
+        left_img = frame[1::2, :]
+        right_img = frame[0::2, :]
 
         # 保存
         cv2.imwrite(str(out_root / "left" / f"{idx:05d}.png"), left_img)

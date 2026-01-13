@@ -2,3 +2,6 @@
 dataset*
 *.mp4
 cfg
+*.sh
+
+nohup.out
