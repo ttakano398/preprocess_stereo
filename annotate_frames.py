@@ -220,10 +220,10 @@ def main():
         for dst_frame_idx in range(dst_start_idx, dst_end_idx + 1):
             src_frame_idx = int(dst_frame_idx * frame_step)
             
-            src_fname_png = f"{src_frame_idx:05d}.png"
-            src_fname_npy = f"{src_frame_idx:05d}.npy"
-            dst_fname_png = f"{dst_frame_idx:05d}.png"
-            dst_fname_npy = f"{dst_frame_idx:05d}.npy"
+            src_fname_png = f"{src_frame_idx:06d}.png"
+            src_fname_npy = f"{src_frame_idx:06d}.npy"
+            dst_fname_png = f"{dst_frame_idx:06d}.png"
+            dst_fname_npy = f"{dst_frame_idx:06d}.npy"
 
             files_processed = False
 

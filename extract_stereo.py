@@ -35,8 +35,8 @@ def extract_frames(video_path, out_dir):
         right_img = frame[0::2, :]
 
         # 保存
-        cv2.imwrite(str(out_root / "left" / f"{idx:05d}.png"), left_img)
-        cv2.imwrite(str(out_root / "right" / f"{idx:05d}.png"), right_img)
+        cv2.imwrite(str(out_root / "left" / f"{idx:06d}.png"), left_img)
+        cv2.imwrite(str(out_root / "right" / f"{idx:06d}.png"), right_img)
 
         print(f"\rProgress: {idx+1}/{total_frames}", end="")
         idx += 1
